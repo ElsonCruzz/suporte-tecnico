@@ -1,113 +1,292 @@
 <!DOCTYPE html>
+<!-- Define a linguagem do documento como Português do Brasil -->
 <html lang="pt-BR">
 <head>
+<!-- Define a codificação de caracteres como UTF-8 para suporte a acentos e caracteres especiais -->
 <meta charset="utf-8">
+<!-- Configura a visualização responsiva para dispositivos móveis, adaptando-se às áreas seguras de telas com notch (viewport-fit=cover) -->
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Título da página exibido na aba do navegador -->
 <title>Bancada – Gestão de Manutenção de TI</title>
+<!-- Importa a fonte externa "Bricolage Grotesque" do Google Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#eef1ef;--card:#fff;--ink:#1b2927;--mute:#5d6e6b;--line:#d5dcda;--acc:#0e6a62;--acc-ink:#fff;--warn:#a85d00;--warn-bg:#fdf0dc;--ok:#1d6b3a;--ok-bg:#dff3e5;--bad:#a8281f;--info-bg:#dcecf8;--info:#1c5a8a;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141b1a;--card:#1e2827;--ink:#e6eeec;--mute:#93a5a1;--line:#33423f;--acc:#3fb5a8;--acc-ink:#0b1514;--warn:#f0b35c;--warn-bg:#3a2d17;--ok:#7fd69a;--ok-bg:#1b3325;--bad:#ff8f86;--info-bg:#1a2f40;--info:#7fb8e6;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#141b1a;--card:#1e2827;--ink:#e6eeec;--mute:#93a5a1;--line:#33423f;--acc:#3fb5a8;--acc-ink:#0b1514;--warn:#f0b35c;--warn-bg:#3a2d17;--ok:#7fd69a;--ok-bg:#1b3325;--bad:#ff8f86;--info-bg:#1a2f40;--info:#7fb8e6;color-scheme:dark}
+/* Variáveis globais CSS (:root) para o tema claro padrão e configurações de padding seguro para telas modernas */
+:root{
+  --bg:#eef1ef;          /* Cor de fundo principal */
+  --card:#fff;          /* Cor de fundo de cards e modais */
+  --ink:#1b2927;         /* Cor principal do texto */
+  --mute:#5d6e6b;        /* Cor do texto secundário/suave */
+  --line:#d5dcda;        /* Cor de bordas e divisores */
+  --acc:#0e6a62;         /* Cor de destaque principal (Primary/Accent) */
+  --acc-ink:#fff;        /* Cor de texto sobre a cor de destaque */
+  --warn:#a85d00;        /* Cor de texto para alertas/avisos */
+  --warn-bg:#fdf0dc;     /* Fundo para alertas/avisos */
+  --ok:#1d6b3a;          /* Cor de sucesso/confirmação */
+  --ok-bg:#dff3e5;       /* Fundo de sucesso/confirmação */
+  --bad:#a8281f;         /* Cor para erros ou ações destrutivas (Excluir) */
+  --info-bg:#dcecf8;     /* Fundo de informações */
+  --info:#1c5a8a;        /* Cor de texto para informações */
+  box-sizing:border-box; 
+  padding-top:env(safe-area-inset-top,0px);      /* Adaptação para entalhe/topo do celular */
+  padding-bottom:env(safe-area-inset-bottom,0px); /* Adaptação para barra inferior do celular */
+}
+
+/* Aplica variáveis do Tema Escuro caso o sistema/dispositivo esteja no modo escuro (salvo se o tema claro for forçado) */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#141b1a;--card:#1e2827;--ink:#e6eeec;--mute:#93a5a1;--line:#33423f;--acc:#3fb5a8;--acc-ink:#0b1514;--warn:#f0b35c;--warn-bg:#3a2d17;--ok:#7fd69a;--ok-bg:#1b3325;--bad:#ff8f86;--info-bg:#1a2f40;--info:#7fb8e6;color-scheme:dark
+  }
+}
+/* Aplica variáveis do Tema Escuro quando a classe/atributo data-theme="dark" estiver ativo no HTML */
+:root[data-theme="dark"]{
+  --bg:#141b1a;--card:#1e2827;--ink:#e6eeec;--mute:#93a5a1;--line:#33423f;--acc:#3fb5a8;--acc-ink:#0b1514;--warn:#f0b35c;--warn-bg:#3a2d17;--ok:#7fd69a;--ok-bg:#1b3325;--bad:#ff8f86;--info-bg:#1a2f40;--info:#7fb8e6;color-scheme:dark
+}
+
+/* Faz com que o cálculo de largura/altura de todos os elementos inclua padding e border */
 *{box-sizing:border-box}
+
+/* Estilização padrão do corpo da página */
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Bricolage Grotesque",system-ui,-apple-system,"Segoe UI",sans-serif}
+
+/* Estilização do cabeçalho superior */
 header{background:var(--acc);color:var(--acc-ink);padding:18px 20px 0}
+/* Container centralizador de largura máxima */
 .wrap{max-width:980px;margin:0 auto}
+/* Estilo do título principal */
 h1{margin:0 0 14px;font-size:1.5rem;letter-spacing:-.01em}
+
+/* Navegação por abas na parte superior */
 nav{display:flex;gap:4px;overflow-x:auto}
 nav button{background:transparent;color:inherit;border:0;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;border-radius:8px 8px 0 0;opacity:.75;white-space:nowrap}
+/* Aba selecionada/ativa */
 nav button.on{background:var(--bg);color:var(--ink);opacity:1}
+
+/* Área de conteúdo principal */
 main{padding:18px 20px 60px}
+
+/* Grid com os cards estatísticos no topo */
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
 .stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px}
-.stat b{display:block;font-size:1.35rem}.stat span{color:var(--mute);font-size:.82rem}
+.stat b{display:block;font-size:1.35rem}
+.stat span{color:var(--mute);font-size:.82rem}
+
+/* Barra de ações e filtros de busca */
 .bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .bar input,.bar select{flex:1;min-width:130px}
+
+/* Estilização padrão de formulários (inputs, selects, textareas) */
 input,select,textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
 textarea{min-height:70px;resize:vertical}
+/* Destaque visual ao focar num campo com o teclado/mouse */
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+
+/* Estilização geral dos botões */
 .btn{font:inherit;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
-.btn.pri{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)}
-.btn.sm{padding:4px 10px;font-size:.85rem}.btn.del{color:var(--bad)}
+.btn.pri{background:var(--acc);color:var(--acc-ink);border-color:var(--acc)} /* Botão Primário */
+.btn.sm{padding:4px 10px;font-size:.85rem} /* Botão Pequeno */
+.btn.del{color:var(--bad)} /* Botão Excluir/Perigo */
+
+/* Layout dos cards de itens (clientes, chamados, etc.) */
 .item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;display:grid;gap:6px}
-.item h3{margin:0;font-size:1.05rem}.item .meta{color:var(--mute);font-size:.88rem}
+.item h3{margin:0;font-size:1.05rem}
+.item .meta{color:var(--mute);font-size:.88rem}
 .row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
 .acts{display:flex;gap:6px;flex-wrap:wrap}
+
+/* Badges / Etiquetas de status */
 .tag{display:inline-block;font-size:.75rem;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--info-bg);color:var(--info);margin-right:4px}
-.tag.mensal{background:var(--ok-bg);color:var(--ok)}.tag.warn{background:var(--warn-bg);color:var(--warn)}
+.tag.mensal{background:var(--ok-bg);color:var(--ok)}
+.tag.warn{background:var(--warn-bg);color:var(--warn)}
+
+/* Mensagem de estado vazio (quando não há registros) */
 .empty{text-align:center;color:var(--mute);padding:34px 10px;border:1px dashed var(--line);border-radius:10px}
+
+/* Estilização da caixa de diálogo modal (<dialog>) */
 dialog{border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);width:min(520px,94vw);padding:20px;max-height:92vh}
-dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog::backdrop{background:rgba(0,0,0,.5)} /* Escurecimento do fundo ao abrir o modal */
 dialog h2{margin:0 0 12px;font-size:1.2rem}
 label{display:block;font-size:.85rem;font-weight:600;margin:10px 0 3px}
 .foot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+
+/* Rodapé de ferramentas de backup */
 .tools{margin-top:26px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--mute);font-size:.85rem}
+
+/* Ajustes de Responsividade para telas menores/dispositivos móveis (Smartphones) */
 @media (max-width:700px){
-header{padding:14px 16px 10px}h1{margin:0;font-size:1.25rem}
-nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));justify-content:space-around;gap:0}
-nav button{flex:1;border-radius:8px;padding:8px 2px;font-size:.78rem;color:var(--mute);opacity:1;min-height:48px}
-nav button.on{background:var(--info-bg);color:var(--acc)}
-main{padding:14px 14px calc(90px + env(safe-area-inset-bottom,0px))}
-input,select,textarea,.btn{font-size:16px;min-height:44px}
-.btn.sm{min-height:40px;padding:6px 12px;font-size:.9rem}
-#new{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:21;border-radius:99px;box-shadow:0 4px 14px rgba(0,0,0,.3);padding:10px 18px}
-dialog{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:16px 16px 0 0;max-height:94vh;overflow:auto}
-.bar input,.bar select{min-width:100%}
+  header{padding:14px 16px 10px}
+  h1{margin:0;font-size:1.25rem}
+  /* Fixa a navegação no rodapé da tela do celular */
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--card);border-top:1px solid var(--line);padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));justify-content:space-around;gap:0}
+  nav button{flex:1;border-radius:8px;padding:8px 2px;font-size:.78rem;color:var(--mute);opacity:1;min-height:48px}
+  nav button.on{background:var(--info-bg);color:var(--acc)}
+  main{padding:14px 14px calc(90px + env(safe-area-inset-bottom,0px))}
+  input,select,textarea,.btn{font-size:16px;min-height:44px}
+  .btn.sm{min-height:40px;padding:6px 12px;font-size:.9rem}
+  /* Botão flutuante para adicionar novos registros no mobile */
+  #new{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:21;border-radius:99px;box-shadow:0 4px 14px rgba(0,0,0,.3);padding:10px 18px}
+  dialog{width:100vw;max-width:100vw;margin:auto 0 0;border-radius:16px 16px 0 0;max-height:94vh;overflow:auto}
+  .bar input,.bar select{min-width:100%}
 }
+
+/* Template escondido para impressão de Ordem de Serviço (OS) */
 #os{display:none;color:#000;background:#fff;padding:20px;font:14px/1.5 system-ui,sans-serif}
-#os h2{margin:0 0 4px}#os table{width:100%;border-collapse:collapse;margin:10px 0}#os td{border:1px solid #888;padding:6px 8px;vertical-align:top}#os .sig{display:flex;gap:40px;margin-top:60px}#os .sig div{flex:1;border-top:1px solid #000;text-align:center;padding-top:4px}
-@media print{body>*:not(#os){display:none!important}#os{display:block!important}}
-#login{display:grid;place-items:center;min-height:100vh;padding:20px}#login form{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;width:min(380px,100%)}#login h2{margin:0}
+#os h2{margin:0 0 4px}
+#os table{width:100%;border-collapse:collapse;margin:10px 0}
+#os td{border:1px solid #888;padding:6px 8px;vertical-align:top}
+#os .sig{display:flex;gap:40px;margin-top:60px}
+#os .sig div{flex:1;border-top:1px solid #000;text-align:center;padding-top:4px}
+
+/* Regras para Impressão: oculta toda a interface e exibe apenas o documento da OS */
+@media print{
+  body>*:not(#os){display:none!important}
+  #os{display:block!important}
+}
+
+/* Tela de login */
+#login{display:grid;place-items:center;min-height:100vh;padding:20px}
+#login form{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px;width:min(380px,100%)}
+#login h2{margin:0}
 </style>
 </head>
 <body>
-<div id="login"><form id="lf"><h2>Bancada</h2><p>Entre para acessar seus clientes.</p><label>E-mail</label><input id="le" type="email" required autocomplete="username"><label>Senha</label><input id="lp" type="password" required autocomplete="current-password"><p id="lerr" style="color:var(--bad)"></p><button class="btn pri" style="width:100%">Entrar</button></form></div>
-<div id="app" style="display:none"><header><div class="wrap">
-<h1>HelpInfo · Gestão de TI <button type="button" class="btn sm" id="sair" style="float:right">Sair</button></h1>
-<nav id="nav"></nav>
-</div></header>
-<main><div class="wrap">
-<div class="stats" id="stats"></div>
-<div class="bar" id="bar"></div>
-<div id="list"></div>
-<div class="tools">
-<span>Dados salvos na nuvem (Supabase).</span>
-<button class="btn sm" id="exp">Baixar backup</button>
-<button class="btn sm" id="imp">Importar backup antigo</button>
-<input type="file" id="file" accept=".json" hidden>
+
+<!-- Tela / Formulário de Autenticação -->
+<div id="login">
+  <form id="lf">
+    <h2>Bancada</h2>
+    <p>Entre para acessar seus clientes.</p>
+    <label>E-mail</label>
+    <input id="le" type="email" required autocomplete="username">
+    <label>Senha</label>
+    <input id="lp" type="password" required autocomplete="current-password">
+    <p id="lerr" style="color:var(--bad)"></p> <!-- Mensagem de erro de login -->
+    <button class="btn pri" style="width:100%">Entrar</button>
+  </form>
 </div>
-</div></main></div>
-<dialog id="dlg"><form id="frm"><h2 id="dt"></h2><div id="fields"></div>
-<div class="foot"><button type="button" class="btn" id="cancel">Cancelar</button><button class="btn pri">Salvar</button></div></form></dialog>
+
+<!-- Aplicação Principal (Oculta por padrão até a realização do login) -->
+<div id="app" style="display:none">
+  <header>
+    <div class="wrap">
+      <h1>Bancada · Gestão de TI <button type="button" class="btn sm" id="sair" style="float:right">Sair</button></h1>
+      <nav id="nav"></nav> <!-- Onde os botões de navegação por aba são renderizados dinamicamente -->
+    </div>
+  </header>
+  <main>
+    <div class="wrap">
+      <div class="stats" id="stats"></div> <!-- Onde as estatísticas são exibidas -->
+      <div class="bar" id="bar"></div>     <!-- Barra de pesquisa, filtros e botões de ação -->
+      <div id="list"></div>               <!-- Lista de cards (Clientes, Equipamentos, Chamados ou Pagamentos) -->
+      
+      <!-- Seção com opções de Backup e Restauração -->
+      <div class="tools">
+        <span>Dados salvos na nuvem (Supabase).</span>
+        <button class="btn sm" id="exp">Baixar backup</button>
+        <button class="btn sm" id="imp">Importar backup antigo</button>
+        <input type="file" id="file" accept=".json" hidden> <!-- Campo de upload de arquivo oculto -->
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Genérico para Cadastro e Edição de Dados -->
+<dialog id="dlg">
+  <form id="frm">
+    <h2 id="dt"></h2>           <!-- Título dinâmico do modal (ex: Novo cliente) -->
+    <div id="fields"></div>     <!-- Campos do formulário inseridos dinamicamente -->
+    <div class="foot">
+      <button type="button" class="btn" id="cancel">Cancelar</button>
+      <button class="btn pri">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Elemento invisível que é populado e exibido somente no momento da impressão de OS -->
 <div id="os"></div>
 
+<!-- Importação da SDK oficial da biblioteca do Supabase via CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script>
+// --- FUNÇÕES UTILITÁRIAS ---
+
+// Atalho rápido para document.querySelector (selecionador DOM)
 const $=s=>document.querySelector(s);
+
+// Sanitiza strings para evitar injeção de XSS ao renderizar HTML
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+// Gera um ID único aleatório baseado em timestamp + string base36
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+
+// Formata valores numéricos para a moeda Real (R$)
 const brl=n=>(Number(n)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+
+// Formata datas do padrão ISO (AAAA-MM-DD) para o padrão brasileiro (DD/MM/AAAA)
 const dt=d=>d?d.split("-").reverse().join("/"):"";
+
+// Obtém a data atual no formato AAAA-MM-DD considerando o fuso horário local
 const today=()=>{const d=new Date();return new Date(d-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+
+// Calcula a diferença em dias entre uma data informada e a data de hoje
 const dias=d=>d?Math.round((new Date(d+"T00:00:00")-new Date(today()+"T00:00:00"))/864e5):null;
+
+// Formata string de mês (AAAA-MM) para MM/AAAA
 const mesFmt=m=>m?m.split("-").reverse().join("/"):"";
-const venc=d=>{const n=dias(d);if(n===null)return"";return n<0?`<span class="tag warn">Contrato vencido há ${-n} dia(s)</span>`:n<=30?`<span class="tag warn">Contrato vence em ${n} dia(s)</span>`:`<span class="tag">Contrato até ${dt(d)}</span>`};
+
+// Gera badge HTML indicando o status de vencimento do contrato de um cliente
+const venc=d=>{
+  const n=dias(d);
+  if(n===null)return"";
+  return n<0?`<span class="tag warn">Contrato vencido há ${-n} dia(s)</span>`:
+         n<=30?`<span class="tag warn">Contrato vence em ${n} dia(s)</span>`:
+         `<span class="tag">Contrato até ${dt(d)}</span>`
+};
+
+// --- CONFIGURAÇÃO E INTEGRAÇÃO SUPABASE ---
 
 const SB_URL="https://tcgmdaxrlylxbnqyqwak.supabase.co";
 const SB_KEY="sb_publishable_2_1F3KV_gUtyAbRq8wZzjQ_ba5xlCWW";
+// Inicializa o cliente Supabase para comunicação com a API de banco de dados
 const sb=supabase.createClient(SB_URL,SB_KEY);
+
+// Objeto de estado global que armazena localmente os registros obtidos do banco
 let db={clientes:[],equip:[],chamados:[],pagamentos:[]};
+
+// Mapeamento entre as chaves de controle do sistema e os nomes reais das tabelas no Supabase
 const TB={clientes:"clientes",equip:"equipamentos",chamados:"chamados",pagamentos:"mensalidades"};
+
+// Converte strings vazias "" para valor null antes de salvar no banco
 const nul=o=>Object.fromEntries(Object.entries(o).map(([k,v])=>[k,v===""?null:v]));
+
+// Converte valores null/undefined vindo do banco em strings vazias "" para renderização segura nos campos
 const vaz=o=>Object.fromEntries(Object.entries(o).map(([k,v])=>[k,v??""]));
+
+// Exibe mensagem de erro no console e popup alert caso falhe alguma operação com a nuvem
 const warn=e=>{if(e){console.error(e);alert("Erro ao salvar na nuvem: "+e.message)}};
+
+// Insere ou atualiza registros (upsert) na tabela do Supabase
 async function put(v,rows){const{error}=await sb.from(TB[v]).upsert([].concat(rows).map(nul));warn(error)}
+
+// Remove um registro específico pelo seu ID do Supabase
 async function del(v,id){const{error}=await sb.from(TB[v]).delete().eq("id",id);warn(error)}
-async function carregar(){for(const v of ORDER){const{data,error}=await sb.from(TB[v]).select("*").order("created_at");if(error){warn(error);return false}db[v]=data.map(r=>{delete r.user_id;delete r.created_at;return vaz(r)})}return true}
+
+// Carrega todos os dados de todas as tabelas do Supabase para o objeto local 'db'
+async function carregar(){
+  for(const v of ORDER){
+    const{data,error}=await sb.from(TB[v]).select("*").order("created_at");
+    if(error){warn(error);return false}
+    db[v]=data.map(r=>{delete r.user_id;delete r.created_at;return vaz(r)})
+  }
+  return true
+}
+
+// --- DICIONÁRIOS E CONFIGURAÇÃO DE FORMULÁRIOS ---
 
 const TIPOS=["Desktop","Notebook","Servidor","Impressora","Roteador / Switch","Nobreak","Outro"];
 const STATUS=["Aberto","Em andamento","Aguardando peça/cliente","Concluído"];
+
+// Mapeamento completo dos esquemas de dados e campos de formulário para cada módulo da aplicação
 const V={
  clientes:{t:"Clientes",one:"cliente",f:[
   {k:"nome",l:"Nome / Empresa",req:1},
@@ -135,14 +314,23 @@ const V={
 };
 const ORDER=["clientes","equip","chamados","pagamentos"];
 const SHORT={clientes:"Clientes",equip:"Equip.",chamados:"Chamados",pagamentos:"Mensal"};
+
+// Variáveis de controle de estado da interface (Modo de visualização atual, Filtros e Item em edição)
 let view="clientes",F={q:"",cli:"",st:""},editing=null;
+
+// Funções auxiliares para buscar nomes vinculados aos IDs salvos
 const cliName=id=>(db.clientes.find(c=>c.id===id)||{nome:"(removido)"}).nome;
 const eqName=id=>{const e=db.equip.find(x=>x.id===id);return e?`${e.tipo} ${e.modelo}`:""};
 
+// --- RENDERIZAÇÃO DA INTERFACE ---
+
+// Renderiza a barra de navegação por abas superiores
 function renderNav(){
  $("#nav").innerHTML=ORDER.map(v=>`<button class="${v===view?"on":""}" data-v="${v}">${SHORT[v]} (${db[v].length})</button>`).join("");
  $("#nav").querySelectorAll("button").forEach(b=>b.onclick=()=>{view=b.dataset.v;F={q:"",cli:"",st:""};render()});
 }
+
+// Calcula e renderiza os indicadores numéricos (dashboard stats)
 function renderStats(){
  const mes=today().slice(0,7);
  const mens=db.clientes.filter(c=>c.tipo==="Mensal");
@@ -154,6 +342,8 @@ function renderStats(){
   [aberto,"chamados em aberto"],[db.pagamentos.filter(p=>p.status!=="Pago").length,"mensalidades pendentes"],[db.clientes.filter(c=>{const d=dias(c.venc);return d!==null&&d<=30}).length,"contratos a vencer (30 dias)"],[brl(avul),"chamados cobrados no mês"]
  ].map(([a,b])=>`<div class="stat"><b>${a}</b><span>${b}</span></div>`).join("");
 }
+
+// Renderiza os controles de busca, filtros de cliente/status e o botão de criação
 function renderBar(){
  let h=`<input id="q" placeholder="Buscar…" value="${esc(F.q)}">`;
  if(view!=="clientes")h+=`<select id="fc"><option value="">Todos os clientes</option>${db.clientes.map(c=>`<option value="${c.id}" ${F.cli===c.id?"selected":""}>${esc(c.nome)}</option>`).join("")}</select>`;
@@ -161,27 +351,50 @@ function renderBar(){
  if(view==="pagamentos")h+=`<button class="btn" id="gen">Gerar mensalidades do mês</button>`;
  h+=`<button class="btn pri" id="new">+ Novo ${V[view].one}</button>`;
  $("#bar").innerHTML=h;
+ 
+ // Eventos dos inputs da barra de ferramentas
  $("#q").oninput=e=>{F.q=e.target.value;renderList()};
  if($("#fc"))$("#fc").onchange=e=>{F.cli=e.target.value;renderList()};
  if($("#fs"))$("#fs").onchange=e=>{F.st=e.target.value;renderList()};
  $("#new").onclick=()=>openForm();
  if($("#gen"))$("#gen").onclick=gerar;
 }
+
+// Filtra, ordena e renderiza a lista principal de itens na tela
 function renderList(){
  const q=F.q.toLowerCase();
+ // Filtro por palavra-chave digitada na busca
  let rows=db[view].filter(r=>JSON.stringify(Object.values(r)).toLowerCase().includes(q)||cliName(r.cli).toLowerCase().includes(q));
+ // Filtro adicional por cliente e por status
  if(F.cli)rows=rows.filter(r=>r.cli===F.cli);
  if(F.st)rows=rows.filter(r=>r.status===F.st);
+ 
+ // Ordenação dos dados dependendo da aba selecionada
  if(view==="chamados")rows.sort((a,b)=>(a.status==="Concluído")-(b.status==="Concluído")||(b.data||"").localeCompare(a.data||""));
- else if(view==="pagamentos")rows.sort((a,b)=>b.mes.localeCompare(a.mes)||(a.status==="Pago")-(b.status==="Pago"));else rows.sort((a,b)=>(a.nome||cliName(a.cli)).localeCompare(b.nome||cliName(b.cli)));
+ else if(view==="pagamentos")rows.sort((a,b)=>b.mes.localeCompare(a.mes)||(a.status==="Pago")-(b.status==="Pago"));
+ else rows.sort((a,b)=>(a.nome||cliName(a.cli)).localeCompare(b.nome||cliName(b.cli)));
+
+ // Caso não haja dados a exibir
  if(!rows.length){$("#list").innerHTML=`<div class="empty">Nenhum ${V[view].one} encontrado. Toque em “Novo ${V[view].one}” para cadastrar.</div>`;return}
+ 
+ // Monta os elementos HTML da lista chamando a função card()
  $("#list").innerHTML=rows.map(r=>card(r)).join("");
+ 
+ // Adiciona evento de clique para todos os botões de ação dos cards gerados
  $("#list").querySelectorAll("[data-a]").forEach(b=>b.onclick=()=>act(b.dataset.a,b.dataset.id));
 }
-function cardPg(r){const ok=r.status==="Pago";
- return `<div class="item"><div class="row"><div style="flex:1"><h3>${esc(cliName(r.cli))} · ${mesFmt(r.mes)}</h3><div><span class="tag ${ok?"mensal":"warn"}">${esc(r.status)}</span><span class="tag">${brl(r.valor)}</span></div>${ok?`<div class="meta">Pago em ${dt(r.pago)} · ${esc(r.forma||"")}</div>`:""}</div></div><div class="acts">${ok?"":`<button class="btn sm pri" data-a="pago" data-id="${r.id}">Marcar como pago</button>`}<button class="btn sm" data-a="edit" data-id="${r.id}">Editar</button><button class="btn sm del" data-a="del" data-id="${r.id}">Excluir</button></div></div>`}
-function card(r){if(view==="pagamentos")return cardPg(r);
+
+// Monta o template do card exclusivo de mensalidades/pagamentos
+function cardPg(r){
+ const ok=r.status==="Pago";
+ return `<div class="item"><div class="row"><div style="flex:1"><h3>${esc(cliName(r.cli))} · ${mesFmt(r.mes)}</h3><div><span class="tag ${ok?"mensal":"warn"}">${esc(r.status)}</span><span class="tag">${brl(r.valor)}</span></div>${ok?`<div class="meta">Pago em ${dt(r.pago)} · ${esc(r.forma||"")}</div>`:""}</div></div><div class="acts">${ok?"":`<button class="btn sm pri" data-a="pago" data-id="${r.id}">Marcar como pago</button>`}<button class="btn sm" data-a="edit" data-id="${r.id}">Editar</button><button class="btn sm del" data-a="del" data-id="${r.id}">Excluir</button></div></div>`
+}
+
+// Monta os cards das outras telas (Clientes, Equipamentos ou Chamados)
+function card(r){
+ if(view==="pagamentos")return cardPg(r);
  let h="",extra="";
+ 
  if(view==="clientes"){
   const ne=db.equip.filter(e=>e.cli===r.id).length,nc=db.chamados.filter(c=>c.cli===r.id&&c.status!=="Concluído").length;
   h=`<h3>${esc(r.nome)}</h3><div><span class="tag ${r.tipo==="Mensal"?"mensal":""}">${esc(r.tipo)}</span>${r.tipo==="Mensal"&&r.valor?`<span class="tag">${brl(r.valor)}/mês</span>`:""}${r.tipo==="Mensal"&&r.dia?`<span class="tag">vence dia ${esc(r.dia)}</span>`:""}${venc(r.venc)}</div>
@@ -200,27 +413,70 @@ function card(r){if(view==="pagamentos")return cardPg(r);
  }
  return `<div class="item"><div class="row"><div style="flex:1;min-width:200px">${h}</div></div><div class="acts">${extra}<button class="btn sm" data-a="edit" data-id="${r.id}">Editar</button><button class="btn sm del" data-a="del" data-id="${r.id}">Excluir</button></div></div>`;
 }
+
+// --- CONTROLE DE AÇÕES DOS BOTÕES (HANDLER DE AÇÕES) ---
+
 function act(a,id){
- if(a==="edit")return openForm(id);
- if(a==="eq"){view="equip";F={q:"",cli:id,st:""};return render()}
- if(a==="ch"){view="chamados";F={q:"",cli:id,st:""};return render()}
- if(a==="pg"){view="pagamentos";F={q:"",cli:id,st:""};return render()}
- if(a==="os")return os(id);
- if(a==="pago"){const p=db.pagamentos.find(x=>x.id===id);p.status="Pago";p.pago=today();put("pagamentos",p);return render()}
- if(a==="novoch"){const e=db.equip.find(x=>x.id===id);view="chamados";F={q:"",cli:"",st:""};render();return openForm(null,{cli:e.cli,eq:e.id})}
- if(a==="fin"){const c=db.chamados.find(x=>x.id===id);c.status="Concluído";put("chamados",c);return render()}
+ if(a==="edit")return openForm(id); // Abre formulário para editar registro existente
+ if(a==="eq"){view="equip";F={q:"",cli:id,st:""};return render()} // Filtra os equipamentos do cliente selecionado
+ if(a==="ch"){view="chamados";F={q:"",cli:id,st:""};return render()} // Filtra os chamados do cliente selecionado
+ if(a==="pg"){view="pagamentos";F={q:"",cli:id,st:""};return render()} // Filtra mensalidades do cliente selecionado
+ if(a==="os")return os(id); // Gera a visualização de Ordem de Serviço para impressão
+ 
+ // Marca um pagamento como concluído/pago
+ if(a==="pago"){
+   const p=db.pagamentos.find(x=>x.id===id);
+   p.status="Pago";
+   p.pago=today();
+   put("pagamentos",p);
+   return render()
+ }
+ 
+ // Atalho para abrir formulário de chamado direto a partir de um equipamento
+ if(a==="novoch"){
+   const e=db.equip.find(x=>x.id===id);
+   view="chamados";
+   F={q:"",cli:"",st:""};
+   render();
+   return openForm(null,{cli:e.cli,eq:e.id})
+ }
+ 
+ // Conclui um chamado aberto
+ if(a==="fin"){
+   const c=db.chamados.find(x=>x.id===id);
+   c.status="Concluído";
+   put("chamados",c);
+   return render()
+ }
+ 
+ // Exclusão de registros com confirmação (e remove em cascata dados vinculados no cliente)
  if(a==="del"){
   if(!confirm("Excluir este registro?"+(view==="clientes"?" Os equipamentos e chamados do cliente também serão excluídos.":"")))return;
-  if(view==="clientes"){db.equip=db.equip.filter(e=>e.cli!==id);db.chamados=db.chamados.filter(c=>c.cli!==id);db.pagamentos=db.pagamentos.filter(p=>p.cli!==id)}
+  if(view==="clientes"){
+    db.equip=db.equip.filter(e=>e.cli!==id);
+    db.chamados=db.chamados.filter(c=>c.cli!==id);
+    db.pagamentos=db.pagamentos.filter(p=>p.cli!==id)
+  }
   if(view==="equip")db.chamados.forEach(c=>{if(c.eq===id)c.eq=""});
-  db[view]=db[view].filter(r=>r.id!==id);del(view,id);render();
+  db[view]=db[view].filter(r=>r.id!==id);
+  del(view,id);
+  render();
  }
 }
+
+// --- FORMULÁRIOS E DIÁLOGOS (MODAL) ---
+
+// Prepara e abre o formulário de cadastro ou edição (modal)
 function openForm(id,pre){
  if(view!=="clientes"&&!db.clientes.length){alert("Cadastre um cliente primeiro.");return}
  editing=id;
+ 
+ // Cria um objeto base com valores padrão ou recupera o objeto a ser editado
  const rec=id?db[view].find(r=>r.id===id):Object.assign({tipo:view==="clientes"?"Mensal":"",status:"Aberto",prio:"Média",data:today(),mes:today().slice(0,7),cli:F.cli||""},pre||{});
+ 
  $("#dt").textContent=(id?"Editar ":"Novo ")+V[view].one;
+ 
+ // Constrói dinamicamente os inputs de acordo com o mapeamento em V[view].f
  $("#fields").innerHTML=V[view].f.map(f=>{
   const v=rec[f.k]??"";let inp;
   if(f.cli)inp=`<select name="${f.k}" ${f.req?"required":""}><option value="">Selecione…</option>${db.clientes.map(c=>`<option value="${c.id}" ${v===c.id?"selected":""}>${esc(c.nome)}</option>`).join("")}</select>`;
@@ -229,46 +485,112 @@ function openForm(id,pre){
   else if(f.t==="area")inp=`<textarea name="${f.k}">${esc(v)}</textarea>`;
   else inp=`<input name="${f.k}" type="${f.t||"text"}" ${f.t==="number"?'step="0.01" min="0"':""} value="${esc(v)}" ${f.req?"required":""}>`;
   return `<div data-f="${f.k}"><label>${f.l}</label>${inp}</div>`}).join("");
+ 
  const fm=$("#frm");
+ 
+ // Preenche o select de equipamentos dinamicamente com base no cliente selecionado
  const fillEq=()=>{
   const s=fm.elements.eq;if(!s)return;
   const list=db.equip.filter(e=>e.cli===fm.elements.cli.value);
   s.innerHTML=`<option value="">Nenhum / geral</option>`+list.map(e=>`<option value="${e.id}" ${rec.eq===e.id?"selected":""}>${esc(e.tipo+" "+e.modelo)}</option>`).join("");
  };
  if(fm.elements.eq){fm.elements.cli.onchange=()=>{rec.eq="";fillEq()};fillEq()}
- const sync=()=>{ // valor mensal só para clientes mensais
-  if(view==="clientes"){["valor","dia"].forEach(k=>fm.querySelector('[data-f="'+k+'"]').style.display=fm.elements.tipo.value==="Mensal"?"":"none")}};
+ 
+ // Oculta/exibe campos específicos no formulário do cliente (ex: valor de mensalidade)
+ const sync=()=>{
+  if(view==="clientes"){["valor","dia"].forEach(k=>fm.querySelector('[data-f="'+k+'"]').style.display=fm.elements.tipo.value==="Mensal"?"":"none")}
+ };
  if(view==="clientes"){fm.elements.tipo.onchange=sync;sync()}
- $("#dlg").showModal();
+ 
+ $("#dlg").showModal(); // Abre o elemento HTML dialog nativo
 }
+
+// Botão de cancelar no formulário modal
 $("#cancel").onclick=()=>$("#dlg").close();
+
+// Evento de submissão do formulário (Salvar dados)
 $("#frm").onsubmit=e=>{
  e.preventDefault();
- const o={};V[view].f.forEach(f=>{o[f.k]=e.target.elements[f.k].value.trim?.()??e.target.elements[f.k].value});
+ const o={};
+ // Coleta os dados digitados nos campos do formulário
+ V[view].f.forEach(f=>{o[f.k]=e.target.elements[f.k].value.trim?.()??e.target.elements[f.k].value});
+ 
  if(view==="clientes"&&o.tipo!=="Mensal")o.valor="";
- let rec;if(editing){rec=db[view].find(r=>r.id===editing);Object.assign(rec,o)}else{rec={id:uid(),...o};db[view].push(rec)}put(view,rec);
- $("#dlg").close();render();
+ 
+ let rec;
+ if(editing){
+   rec=db[view].find(r=>r.id===editing);
+   Object.assign(rec,o); // Atualiza objeto existente
+ }else{
+   rec={id:uid(),...o};
+   db[view].push(rec); // Insere novo registro na lista local
+ }
+ 
+ put(view,rec); // Envia as alterações ao banco Supabase
+ $("#dlg").close();
+ render();
 };
+
+// --- IMPORTAÇÃO E EXPORTAÇÃO DE BACKUP (JSON) ---
+
+// Exporta o banco local em um arquivo de texto no formato JSON
 $("#exp").onclick=()=>{
  const a=document.createElement("a");
  a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,1)],{type:"application/json"}));
- a.download=`backup-bancada-${today()}.json`;a.click();
+ a.download=`backup-bancada-${today()}.json`;
+ a.click();
 };
+
+// Aciona o input do tipo file escondido ao clicar no botão de importação
 $("#imp").onclick=()=>$("#file").click();
+
+// Lê e restaura os dados contidos no arquivo JSON selecionado
 $("#file").onchange=e=>{
  const f=e.target.files[0];if(!f)return;
  const r=new FileReader();
- r.onload=()=>{try{const d=JSON.parse(r.result);
-  if(!d.clientes||!d.equip||!d.chamados)throw 0;d.pagamentos=d.pagamentos||[];
-  if(confirm("Enviar estes dados para a nuvem? Registros com o mesmo código serão atualizados.")){(async()=>{for(const v of ORDER){if(d[v].length)await put(v,d[v])}await carregar();render()})()}
- }catch(x){alert("Arquivo de backup inválido.")}};
- r.readAsText(f);e.target.value="";
+ r.onload=()=>{
+  try{
+    const d=JSON.parse(r.result);
+    if(!d.clientes||!d.equip||!d.chamados)throw 0;
+    d.pagamentos=d.pagamentos||[];
+    if(confirm("Enviar estes dados para a nuvem? Registros com o mesmo código serão atualizados.")){
+      (async()=>{
+        for(const v of ORDER){if(d[v].length)await put(v,d[v])}
+        await carregar();
+        render();
+      })()
+    }
+  }catch(x){alert("Arquivo de backup inválido.")}
+ };
+ r.readAsText(f);
+ e.target.value="";
 };
-function gerar(){const m=today().slice(0,7);let n=0;const novos=[];
- db.clientes.filter(c=>c.tipo==="Mensal").forEach(c=>{if(!db.pagamentos.some(p=>p.cli===c.id&&p.mes===m)){const p={id:uid(),cli:c.id,mes:m,valor:c.valor||"",status:"Pendente",pago:"",forma:"Pix"};db.pagamentos.push(p);novos.push(p);n++}});
- if(n)put("pagamentos",novos);render();alert(n?n+" mensalidade(s) gerada(s) para "+mesFmt(m)+".":"As mensalidades deste mês já foram geradas.")}
-function os(id){const c=db.chamados.find(x=>x.id===id),k=db.clientes.find(x=>x.id===c.cli)||{},e=db.equip.find(x=>x.id===c.eq);
- $("#os").innerHTML=`<h2>Ordem de Serviço nº ${esc(c.id.slice(-5).toUpperCase())}</h2><div>Data: ${dt(c.data)} · Status: ${esc(c.status)} · Prioridade: ${esc(c.prio)}</div>
+
+// --- REGRAS DE NEGÓCIO DA APLICAÇÃO ---
+
+// Gera mensalidades automáticas no mês atual para todos os clientes do tipo "Mensal"
+function gerar(){
+  const m=today().slice(0,7);
+  let n=0;
+  const novos=[];
+  db.clientes.filter(c=>c.tipo==="Mensal").forEach(c=>{
+    // Garante que não criará pagamentos duplicados no mesmo mês
+    if(!db.pagamentos.some(p=>p.cli===c.id&&p.mes===m)){
+      const p={id:uid(),cli:c.id,mes:m,valor:c.valor||"",status:"Pendente",pago:"",forma:"Pix"};
+      db.pagamentos.push(p);
+      novos.push(p);
+      n++;
+    }
+  });
+  if(n)put("pagamentos",novos);
+  render();
+  alert(n?n+" mensalidade(s) gerada(s) para "+mesFmt(m)+".":"As mensalidades deste mês já foram geradas.")
+}
+
+// Gera e formata a Ordem de Serviço (OS) na div oculta e dispara o comando de impressão do navegador
+function os(id){
+  const c=db.chamados.find(x=>x.id===id),k=db.clientes.find(x=>x.id===c.cli)||{},e=db.equip.find(x=>x.id===c.eq);
+  $("#os").innerHTML=`<h2>Ordem de Serviço nº ${esc(c.id.slice(-5).toUpperCase())}</h2><div>Data: ${dt(c.data)} · Status: ${esc(c.status)} · Prioridade: ${esc(c.prio)}</div>
 <table><tr><td><b>Cliente</b><br>${esc(k.nome)}</td><td><b>Contato</b><br>${esc([k.contato,k.telefone].filter(Boolean).join(" · "))}</td></tr>
 <tr><td colspan="2"><b>Endereço</b><br>${esc(k.endereco)}</td></tr>
 <tr><td colspan="2"><b>Equipamento</b><br>${e?esc(e.tipo+" "+e.modelo+(e.serie?" · Série "+e.serie:"")):"—"}</td></tr>
@@ -276,17 +598,45 @@ function os(id){const c=db.chamados.find(x=>x.id===id),k=db.clientes.find(x=>x.i
 <tr><td colspan="2"><b>Solução aplicada</b><br>${esc(c.sol)||"<br><br><br>"}</td></tr>
 <tr><td colspan="2"><b>Valor</b><br>${k.tipo==="Mensal"?"Coberto pelo contrato mensal":c.valor?brl(c.valor):"A combinar"}</td></tr></table>
 <div class="sig"><div>Técnico</div><div>Cliente</div></div>`;
- window.print()}
-function render(){renderNav();renderStats();renderBar();renderList()}
+  window.print(); // Abre a janela nativa de impressão/salvar como PDF
+}
+
+// Re-renderiza toda a interface em cascata
+function render(){
+  renderNav();
+  renderStats();
+  renderBar();
+  renderList();
+}
+
+// --- AUTENTICAÇÃO E INICIALIZAÇÃO DA APLICAÇÃO ---
+
+// Verifica se há uma sessão ativa de usuário autenticado via Supabase Auth
 async function entrar(){
  const{data:{session}}=await sb.auth.getSession();
- $("#login").style.display=session?"none":"grid";$("#app").style.display=session?"":"none";
+ // Mostra tela de login se não houver sessão ativa, ou exibe a aplicação principal
+ $("#login").style.display=session?"none":"grid";
+ $("#app").style.display=session?"":"none";
  if(session&&await carregar())render();
 }
-$("#lf").onsubmit=async e=>{e.preventDefault();$("#lerr").textContent="";
- const{error}=await sb.auth.signInWithPassword({email:$("#le").value,password:$("#lp").value});
- if(error)$("#lerr").textContent="E-mail ou senha incorretos.";else entrar()};
-$("#sair").onclick=async()=>{await sb.auth.signOut();db={clientes:[],equip:[],chamados:[],pagamentos:[]};entrar()};
+
+// Trata a submissão do formulário de login (Autenticação por e-mail e senha)
+$("#lf").onsubmit=async e=>{
+  e.preventDefault();
+  $("#lerr").textContent="";
+  const{error}=await sb.auth.signInWithPassword({email:$("#le").value,password:$("#lp").value});
+  if(error)$("#lerr").textContent="E-mail ou senha incorretos.";
+  else entrar();
+};
+
+// Trata o encerramento da sessão (Logout)
+$("#sair").onclick=async()=>{
+  await sb.auth.signOut();
+  db={clientes:[],equip:[],chamados:[],pagamentos:[]}; // Limpa cache local por segurança
+  entrar();
+};
+
+// Executa a checagem de login na carga inicial do arquivo
 entrar();
 </script>
 </body>
